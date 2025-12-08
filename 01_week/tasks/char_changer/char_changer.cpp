@@ -5,11 +5,11 @@
 
 size_t CharChanger(char array[], size_t size, char delimiter = ' ') {
     size_t cntRepeat = 0;
-    char* res = (char*)calloc(size, sizeof(char));
+    char res[size] = {0};
     size_t resInd = 0;
 
     auto parse = [&](size_t i, char cymbol) {
-        if (array[i] == array[i-1]) {
+        if (i > 0 && array[i] == array[i-1]) {
             if (cntRepeat != 1)
                 --resInd;
             ++cntRepeat;
@@ -23,13 +23,13 @@ size_t CharChanger(char array[], size_t size, char delimiter = ' ') {
     };
 
     for (size_t i = 0; i < size; ++i) {
-        if (48 <= array[i] && array[i] <= 57)
+        if ('0' <= array[i] && array[i] <= '9')
             parse(i, '*');
-        else if (97 <= array[i] && array[i] <= 122)
+        else if ('a' <= array[i] && array[i] <= 'z')
             parse(i, array[i] - ' ');
-        else if (65 <= array[i] && array[i] <= 90)
+        else if ('A' <= array[i] && array[i] <= 'Z')
             parse(i, array[i]);
-        else if (array[i] == 32) {
+        else if (array[i] == ' ') {
             res[resInd] = delimiter;
             ++resInd;
             while (array[i] == ' ')
@@ -43,6 +43,5 @@ size_t CharChanger(char array[], size_t size, char delimiter = ' ') {
     for (size_t i = 0; i < size; ++i)
         array[i] = res[i];
 
-    free(res);
     return resInd;
 }
