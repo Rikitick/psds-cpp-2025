@@ -1,7 +1,6 @@
 #include <cstdint>
 #include <stdexcept>
 
-
 int64_t Addition(int a, int b) {
     return static_cast<int64_t>(a) + b;
 }
