@@ -6,7 +6,7 @@
 void PrintBits(long long value, size_t bytes) {
     size_t bits = bytes*8;
     bool reverse = false;
-    bool* res = (bool*)calloc(bits, sizeof(bool));
+    bool res[bits] = {0};
 
     if (value < 0) {
         reverse = true;
@@ -29,5 +29,4 @@ void PrintBits(long long value, size_t bytes) {
         std::cout << res[i];
     }
     std::cout << '\n';
-    free(res);
 }
