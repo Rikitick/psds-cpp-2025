@@ -6,12 +6,14 @@
 
 class Queue {
 public:
+    // Конструкторы (объявления)
     Queue();
     Queue(std::stack<int> st);
     Queue(std::vector<int> vec);
     Queue(std::initializer_list<int> list);
     Queue(int n);
 
+    // Методы (объявления)
     size_t Size() const;
     bool Empty() const;
     void Push(int val);
@@ -23,6 +25,7 @@ public:
     void Clear();
     void Swap(Queue& other);
 
+    // Операторы (объявления)
     friend bool operator==(const Queue& a, const Queue& b);
     friend bool operator!=(const Queue& a, const Queue& b);
 
@@ -30,6 +33,7 @@ private:
     mutable std::vector<int> in;
     mutable std::vector<int> out;
 
+    // Подготовка стека на вывод
     void prepareOut() const {
         if (out.empty()) {
             while (!in.empty()) {
@@ -38,19 +42,12 @@ private:
             }
         }
     }
-
-    void prepareIn() const {
-        if (in.empty()) {
-            while (!out.empty()) {
-                in.push_back(out.back());
-                out.pop_back();
-            }
-        }
-    }
 };
 
-Queue::Queue() = default;
 
+// Конструкторы (реализации)
+
+Queue::Queue() = default;
 Queue::Queue(std::stack<int> st) {
     while (!st.empty()) {
         this->Push(st.top());
@@ -58,23 +55,14 @@ Queue::Queue(std::stack<int> st) {
     }
     std::reverse(in.begin(), in.end());
 }
-
-Queue::Queue(std::vector<int> vec) {
-    in.reserve(vec.size());
-    out.reserve(vec.size());
-    in = vec;
-}
-
-Queue::Queue(std::initializer_list<int> list) {
-    in.reserve(list.size());
-    out.reserve(list.size());
-    in = list;
-}
-
+Queue::Queue(std::vector<int> vec) : in(vec) {}
+Queue::Queue(std::initializer_list<int> list) : in(list) {}
 Queue::Queue(int n) {
     in.reserve(n);
     out.reserve(n);
 }
+
+//Методы (реализации)
 
 size_t Queue::Size() const {
     return in.size() + out.size();
@@ -107,13 +95,15 @@ const int& Queue::Front() const {
 }
 
 int& Queue::Back() {
-    prepareIn();
-    return in.back();
+    if (!in.empty())
+        return in.back();
+    return out.front(); 
 }
 
 const int& Queue::Back() const {
-    prepareIn();
-    return in.back();
+    if (!in.empty())
+        return in.back();
+    return out.front();
 }
 
 void Queue::Clear() {
@@ -127,6 +117,8 @@ void Queue::Swap(Queue& other) {
     std::swap(in, other.in);
     std::swap(out, other.out);
 }
+
+// Операторы (реализации)
 
 bool operator==(const Queue& a, const Queue& b) {
     if ((a.in.size() + a.out.size()) != (b.in.size() + b.out.size()))
