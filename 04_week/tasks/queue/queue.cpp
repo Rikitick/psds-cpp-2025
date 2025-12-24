@@ -26,8 +26,8 @@ public:
     void Swap(Queue& other);
 
     // Операторы (объявления)
-    friend bool operator==(const Queue& a, const Queue& b);
-    friend bool operator!=(const Queue& a, const Queue& b);
+    bool operator==(const Queue& other) const;
+    bool operator!=(const Queue& other) const;
 
 private:
     mutable std::vector<int> in;
@@ -47,7 +47,7 @@ private:
 
 // Конструкторы (реализации)
 
-Queue::Queue() = default;
+Queue::Queue() {};
 Queue::Queue(std::stack<int> st) {
     while (!st.empty()) {
         this->Push(st.top());
@@ -120,8 +120,8 @@ void Queue::Swap(Queue& other) {
 
 // Операторы (реализации)
 
-bool operator==(const Queue& a, const Queue& b) {
-    if ((a.in.size() + a.out.size()) != (b.in.size() + b.out.size()))
+bool Queue::operator==(const Queue& other) const {
+    if ((this->in.size() + this->out.size()) != (other.in.size() + other.out.size()))
         return false;
 
     auto get_val = [](const Queue& q, size_t index) {
@@ -130,14 +130,14 @@ bool operator==(const Queue& a, const Queue& b) {
         return q.in[index - q.out.size()];
     };
 
-    size_t total_size = a.in.size() + a.out.size();
+    size_t total_size = this->in.size() + this->out.size();
     for (size_t i = 0; i < total_size; ++i)
-        if (get_val(a, i) != get_val(b, i))
+        if (get_val(*this, i) != get_val(other, i))
             return false;
 
     return true;
 }
 
-bool operator!=(const Queue& a, const Queue& b) {
-    return !(a == b);
+bool Queue::operator!=(const Queue& other) const {
+    return !(*this == other);
 }
