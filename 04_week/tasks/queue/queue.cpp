@@ -124,7 +124,7 @@ bool Queue::operator==(const Queue& other) const {
     if ((this->in.size() + this->out.size()) != (other.in.size() + other.out.size()))
         return false;
 
-    auto get_val = [](const Queue& q, size_t index) {
+    auto getVal = [](const Queue& q, size_t index) {
         if (index < q.out.size())
             return q.out[q.out.size() - 1 - index];
         return q.in[index - q.out.size()];
@@ -132,7 +132,7 @@ bool Queue::operator==(const Queue& other) const {
 
     size_t total_size = this->in.size() + this->out.size();
     for (size_t i = 0; i < total_size; ++i)
-        if (get_val(*this, i) != get_val(other, i))
+        if (getVal(*this, i) != getVal(other, i))
             return false;
 
     return true;
