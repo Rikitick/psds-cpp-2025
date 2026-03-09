@@ -107,11 +107,11 @@ size_t StringView::Find(char symbol, size_t pos = 0) const {
 }
 
 size_t StringView::Find(StringView sv, size_t pos = 0) const {
-    if (sv.size > size - pos || (data == nullptr || pos >= size)) {
-        return npos;
-    }
     if (sv.size == 0) {
         return pos;
+    }
+    if (sv.size > size - pos || (data == nullptr || pos >= size)) {
+        return npos;
     }
     for (size_t i = pos; i <= size - sv.size; ++i) {
         if (std::memcmp(data + i, sv.data, sv.size) == 0) {
